@@ -1,0 +1,15 @@
+{
+  "name": "discoinnect",
+  "version": "1.0.0",
+  "description": "DISCOINNEEEEEEEEECT!",
+  "main": "src/bot.js",
+  "scripts": {
+    "start": "node src/bot.js"
+  },
+  "author": "kuff",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^11.3.2",
+    "lowdb": "^1.0.0"
+  }
+}
