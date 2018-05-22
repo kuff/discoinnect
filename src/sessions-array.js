@@ -27,6 +27,11 @@ module.exports = class SessionsArray {
         return session ? session.payout() : 0;
     }
 
+    payout() {
+        return !this.sessions[0] ? 0
+            : this.sessions.map(session => session.payout()).sum();
+    }
+
     update(member) {
         if (member.user.bot) return;
         const channel = member.voiceChannel;

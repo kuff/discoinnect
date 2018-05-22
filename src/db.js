@@ -37,8 +37,8 @@ module.exports = class Database {
             const payout = session.payout();
             session.members.forEach(member => {
                 let data = this.getMember(member)
-                const balance = data.balance += payout;
-                const earnings = data.earnings.mining += payout;
+                data.balance += payout;
+                data.earnings.mining += payout;
                 this.set(member.user.id, data);
             });
         });
@@ -48,6 +48,10 @@ module.exports = class Database {
     transfer(from, to, amount, message) {
         if (!to || !to.user)
             return 'cannot send coins to that user! ';
+        if (to.user.bot) {
+            message.reply('you cannot send coins to bots!');
+            return;
+        }
         if (from === to) 
             return 'you cannot send coins to yourself! '
         let sender = this.getMember(from);

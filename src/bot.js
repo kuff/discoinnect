@@ -15,7 +15,7 @@ client.on('ready', () => {
 })
 
 client.on('message', message => {
-    if (message.author.bot || !message.content.startsWith(prefix)
+    if (!message.content.startsWith(prefix)
     || message.channel.type !== 'text') return;
 
     let params = message.content.trim().split(/ +/g);
@@ -29,12 +29,14 @@ client.on('message', message => {
     switch(command) {
 
         case 'rate':
+            if (message.author.bot) return;
             const rate = sessions.getRate(message.member);
             message.reply('you are currently earning `' + rate +
                 ' Discoin(s)` per minute!');
             break;
         
         case 'balance':
+            if (message.author.bot) return;
             let member = message.member;
             const balance = db.getMember(member).balance;
             const payout = sessions.getPayout(member);
@@ -44,21 +46,25 @@ client.on('message', message => {
             break;
 
         case 'mine':
-            const mined = db.balance();
+            const mined = db.balance() + sessions.payout();
             mined_percent = Math.round(mined / coin_cap * 10000)
                 / 100;
-            message.reply('`' + mined + ' out of ' + coin_cap
-                + ' (' + mined_percent + '%) Discoin(s)` have been' 
-                + ' mined! You can expect a mining insufficiency of'
-                + ' `÷ ' + mined_percent + '%`!');
+            message.reply('`' + mined_percent + '% of all '
+                + 'Discoin(s)` have been mined, resulting in a '
+                + 'mining inefficiency of `÷' + mined_percent 
+                + '%` compared to the beginnning!');
             break;
 
         case 'transfer':
-            // explain...
+            if (message.author.bot) return;
+            // catch various errors in the command format
             let response = 'incorrectly formatted command! '
             if (params[1] === 'to' && !Number.isNaN(params[0])
             && parseFloat(params[0]) > 0 && message.mentions.members
             && params[2]) {
+                // payout any active sessions to insure balance
+                // consistency
+                sessions.update(message.member);
                 // execute transfer and help out the user if it 
                 // doesn't go through
                 const recipient = message.mentions.members.first();
@@ -66,6 +72,8 @@ client.on('message', message => {
                     parseFloat(params[0]), message);
                 if (!response) return;
             }
+            // hint at correnct command formatting if transition
+            // fails
             message.reply(response 
                 + 'Try using the command like this: `' + prefix 
                 + 'transfer <amount> to <recipient>`');
