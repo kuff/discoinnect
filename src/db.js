@@ -15,11 +15,20 @@ module.exports = class Database {
     }
 
     getMember(member) {
-        const data = this.db.get(`members[${member.user.id}]`, 
+        let id = member
+        if (member.user) id = member.user.id;
+        const data = this.db.get(`members[${id}]`, 
             undefined).value();
         return data ? data : { balance: 0, earnings: {
             mining: 0, gambling: 0, recieved: 0
         } };
+    }
+
+    getAllMembers() {
+        let map = new Map()
+        this.db.get('members').keys().forEach(id => 
+            map.set(id, this.getMember(id))).value();
+        return map;
     }
 
     set(id, data) {
