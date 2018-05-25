@@ -3,6 +3,6 @@
     "db_path": "db.json",
     "coin_cap": 1000,
     "base_rate": 0.02,
-    "rate_multiplier": 0.8,
-    "game_multiplier": 0.4
+    "rate_modifier": 0.8,
+    "game_modifier": 0.4
 }

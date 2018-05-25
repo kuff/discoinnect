@@ -11,7 +11,7 @@ const db = new DatabaseHandler();
 const sessions = new SessionsArray(db);
 
 client.on('ready', () => {
-    // boit successfully connected to Discord
+    // bot successfully connected to Discord
     console.log(`${client.user.username}#${client.user
         .discriminator} is up and running!`);
 })

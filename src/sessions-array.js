@@ -1,6 +1,9 @@
 const calcRate = require('./calc-rate.js');
 const Session = require('./session.js');
 
+/**
+ * The class responsible for storing and managing sessions
+ */
 module.exports = class SessionsArray {
     
     constructor(database, sessions) {
@@ -10,6 +13,11 @@ module.exports = class SessionsArray {
         else this.sessions = sessions;             //
     }
 
+    /**
+     * get the session containing a specific member
+     * @param { Member } member the member to look for
+     * @returns { Session || null } either retrives the found session, or null of no session was found
+     */
     getSession(member) {
         if (!member) return;
         return this.sessions.find(session =>
@@ -17,24 +25,46 @@ module.exports = class SessionsArray {
                 elem.user.equals(member.user)));
     }
 
+    /**
+     * get a specific members rate
+     * @param { Member } member the member to look for
+     * @returns { Number } the rate, 0 if no member was found
+     */
     getRate(member) {
         const session = this.getSession(member);
         return session ? session.rate : 0;
     }
 
+    /**
+     * get a specific members payout
+     * @param { Member } member the member to look for
+     * @returns { Number } the payout, 0 if no member was found
+     */
     getPayout(member) {
         const session = this.getSession(member);
         return session ? session.payout() : 0;
     }
 
+    /**
+     * returns the accumulated potential payout from all active sessions
+     * @returns { Number } the total payout from all active sessions
+     */
     payout() {
         return !this.sessions[0] ? 0
             : this.sessions.reduce((acc, session) => 
                 acc + session.payout(), 0);
     }
 
+    /**
+     * the function responsible for creating sessions
+     * @param { Member } member the member to update
+     * @returns { void }
+     */
     update(member) {
+        // ignore bots
         if (member.user.bot) return;
+        // if member is in a voice channel, pull in all users
+        // connected to that channel
         const channel = member.voiceChannel;
         let input = [];
         if (channel) {
