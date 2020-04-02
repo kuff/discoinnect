@@ -112,8 +112,7 @@ client.on('message', message => {
             if (params[1] === 'to' && !Number.isNaN(params[0])
             && parseFloat(params[0]) > 0 && message.mentions.members
             && params[2]) {
-                // payout any active sessions to insure balance
-                // consistency
+                // payout any active sessions to insure balance consistency
                 sessions.update(message.member);
                 // execute transfer and help out the user if it 
                 // doesn't go through
@@ -122,8 +121,7 @@ client.on('message', message => {
                     parseFloat(params[0]), message);
                 if (!response) return;
             }
-            // hint at correnct command formatting if transition
-            // fails
+            // hint at correnct command formatting if transaction fails
             message.reply(response 
                 + 'Try using the command like this: `' + prefix 
                 + 'transfer <amount> to <recipient>`');
@@ -145,7 +143,7 @@ client.on('presenceUpdate', (old_member, new_member) => {
     if (!sessions.getSession(new_member)) return;
     // when a users presence changes, looking particularly for games
     // played by users who are already in sessions (aka mining)
-    console.log('presenceUpdate! Causing the following');
+    console.log('presenceUpdate! Causing the following update:');
     // update the sessions
     sessions.update(new_member);
 });
