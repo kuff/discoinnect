@@ -2,9 +2,9 @@
 Enable earning and transfer of _Discoins_ between members of your Discord server. See also the [Discordify music bot](https://github.com/kuff/discordify).
 
 ## How it Works
-The bot works by monitoring changes in server member states, awarding Discoins to users who are in the same voice channel, with a boost for each user above two, disregarding bot users. An additional bonus is also awarded for users who are playing the same game, while in the same voice channel.
+The bot works by monitoring changes in server member states, awarding Discoins to users who are in the same voice channel, with a boost for each user above two, disregarding bot users. An additional bonus is also awarded for users who are playing the same game, while also in the same voice channel.
 
-The algorithm for awarding coins emulates that of cryptocurrencies like Bitcoin, by exponensially increasing the time it takes to earn new coins, as more coins are mined. See the **Setup** section for how to customize this.
+The algorithm for awarding coins emulates that of cryptocurrencies like Bitcoin by exponentially increasing the time it takes to earn new coins as more coins are mined. See the **Setup** section for how to customize this.
 
 ## Available Commands
 Following is a list of commands available through the discoinnect bot:
